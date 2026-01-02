@@ -9,7 +9,8 @@
  */
 
 export const speedoRoutes = [
-  { routeNo: 1, from: "Railway Station", to: "Bhatti Chowk" },
+  { routeNo: 1, from: "Thokar", to: "Mall Road" }, // Canal Road (S1)
+  { routeNo: 2, from: "Railway Station", to: "Bhatti Chowk" },
   { routeNo: 2, from: "Samanabad Mor", to: "Bhatti Chowk" },
   { routeNo: 3, from: "Railway Station", to: "Shahdara Lari Adda" },
   { routeNo: 4, from: "R.A. Bazar", to: "Chungi Amar Sidhu" },

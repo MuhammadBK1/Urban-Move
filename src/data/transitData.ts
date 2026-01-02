@@ -24,12 +24,13 @@ export const transitData = {
     color: "#FF6F00",
     icon: "🚇",
     stations: [
-      { id: "ol-1", name: "Dera Gujran", nameUrdu: "ڈیرہ گجراں", lat: 31.6151, lng: 74.2542 },
-      { id: "ol-2", name: "Ali Town", nameUrdu: "علی ٹاؤن", lat: 31.5924, lng: 74.2634 },
+      { id: "OL1", name: "Ali Town", nameUrdu: "علی ٹاؤن", lat: 31.483, lng: 74.252 },
+      { id: "OL2", name: "Gaddafi Stadium", nameUrdu: "قذافی اسٹیڈیم", lat: 31.520, lng: 74.344 },
+      { id: "OL3", name: "Lakshmi Chowk", nameUrdu: "لکشمی چوک", lat: 31.560, lng: 74.324 },
+      { id: "OL4", name: "Dera Gujran", nameUrdu: "ڈیرہ گجراں", lat: 31.589, lng: 74.337 },
       { id: "ol-3", name: "Mahmood Booti", nameUrdu: "محمود بوٹی", lat: 31.5823, lng: 74.2712 },
       { id: "ol-4", name: "Salamatpura", nameUrdu: "سلامت پورہ", lat: 31.5745, lng: 74.2798 },
       { id: "ol-5", name: "Pakistan Mint", nameUrdu: "پاکستان منٹ", lat: 31.5658, lng: 74.2886 },
-      { id: "ol-6", name: "Laxmi Chowk", nameUrdu: "لکشمی چوک", lat: 31.5573, lng: 74.2978 },
       { id: "ol-7", name: "GPO Chowk", nameUrdu: "جی پی او چوک", lat: 31.5494, lng: 74.3064 },
       { id: "ol-8", name: "Lake Road", nameUrdu: "جھیل روڈ", lat: 31.5402, lng: 74.3158 },
       { id: "ol-9", name: "Anarkali", nameUrdu: "انارکلی", lat: 31.5324, lng: 74.3245 },
@@ -83,16 +84,17 @@ export const transitData = {
   // =====================================================
   speedoRoutes: [
     {
-      id: "speedo-1",
-      name: "Speedo Route 1: Railway Station - Bhatti Chowk",
-      nameUrdu: "اسپیڈو روٹ 1: ریلوے اسٹیشن - بھٹی چوک",
+      id: "S1",
+      name: "Canal Road",
+      nameUrdu: "نہر روڈ",
       number: "S1",
       fare: 30,
       frequency: "10-15 mins",
       color: "#9C27B0",
       stops: [
-        { id: "s1-s1", name: "Railway Station", nameUrdu: "ریلوے اسٹیشن", lat: 31.5668, lng: 74.3127 },
-        { id: "s1-s2", name: "Bhatti Chowk", nameUrdu: "بھٹی چوک", lat: 31.5892, lng: 74.2967 }
+        { id: "s1-s1", name: "Thokar", nameUrdu: "ٹھوکر", lat: 31.470, lng: 74.240 },
+        { id: "s1-s2", name: "Qaddafi Stadium", nameUrdu: "قذافی اسٹیڈیم", lat: 31.520, lng: 74.344 },
+        { id: "s1-s3", name: "Mall Road", nameUrdu: "مال روڈ", lat: 31.560, lng: 74.324 }
       ]
     },
     {

@@ -185,7 +185,7 @@ export const MapView: React.FC<MapViewProps> = ({
   routeDestination = null,
   visibleRouteIds,
   selectedRouteOption = null,
-  onRouteOptionSelect,
+  onRouteOptionSelect: _onRouteOptionSelect = undefined,
   selectedMultiModalRoute = null,
 }) => {
   // TEMPORARY DEBUG: Log environment variables at component level
@@ -1348,7 +1348,10 @@ export const MapView: React.FC<MapViewProps> = ({
   }, [lang]);
 
   // Fetch and draw route using Mapbox Directions API
-  const drawRoute = useCallback(async (start: Coordinate, destination: Coordinate) => {
+  // Note: Currently unused but kept for future use
+  // @ts-ignore - Reserved for future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _drawRoute = useCallback(async (start: Coordinate, destination: Coordinate) => {
     if (!mapRef.current || !mapLoaded) return;
 
     const accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
@@ -1630,12 +1633,14 @@ export const MapView: React.FC<MapViewProps> = ({
       const layerId = `route-segment-layer-${index}`;
 
       // Remove existing if any
-      if (mapRef.current.getLayer(layerId)) {
+      if (mapRef.current && mapRef.current.getLayer(layerId)) {
         mapRef.current.removeLayer(layerId);
       }
-      if (mapRef.current.getSource(sourceId)) {
+      if (mapRef.current && mapRef.current.getSource(sourceId)) {
         mapRef.current.removeSource(sourceId);
       }
+
+      if (!mapRef.current) return;
 
       mapRef.current.addSource(sourceId, {
         type: 'geojson',

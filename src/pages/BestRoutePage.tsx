@@ -18,6 +18,7 @@ import { useApp } from '../context/AppContext';
 import { RouteSuggestionCard } from '../components/RouteFinder';
 import { BottomSheet, AppHeader, QuickActions } from '../components';
 import { MapView } from '../components/Map/MapView';
+import { RouteBottomSheet, RouteOption as RouteBottomSheetOption } from '../components/UI/RouteBottomSheet';
 import { RouteSuggestion, findRoutes, parseLocation } from '../services/routeFinderService';
 import { scoreAndRankRoutes, RoutePreference, ScoredRoute } from '../services/routeScoringService';
 import { recordRouteUsage, getSuggestedRoutine } from '../services/routineDetectionService';
@@ -56,6 +57,8 @@ export const BestRoutePage: React.FC = () => {
   const [showRouteSheet, setShowRouteSheet] = useState(false);
   const [isLoadingRoutes, setIsLoadingRoutes] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [showRouteBottomSheet, setShowRouteBottomSheet] = useState(false);
+  const [selectedRouteBottomSheetId, setSelectedRouteBottomSheetId] = useState<string | null>(null);
 
   // Load favorites
   useEffect(() => {
@@ -131,7 +134,7 @@ export const BestRoutePage: React.FC = () => {
 
       // Also find transit routes (legacy)
       const suggestions = findRoutes(routeStart, parsedDestination, lang);
-      const scoredRoutes = scoreAndRankRoutes(suggestions, preference);
+      const scoredRoutes = scoreAndRankRoutes(suggestions);
       setRouteSuggestions(scoredRoutes);
 
       // Record route usage for routine detection
@@ -168,6 +171,154 @@ export const BestRoutePage: React.FC = () => {
       navigate(`/route/${suggestion.steps[0].routeId}`);
     }
   };
+
+  // Convert all routes to RouteBottomSheet format
+  const getAllRoutesForBottomSheet = (): RouteBottomSheetOption[] => {
+    const routes: RouteBottomSheetOption[] = [];
+
+    // Add Mapbox driving routes
+    mapboxRoutes.forEach((route, index) => {
+      routes.push({
+        id: `mapbox-${route.id}`,
+        type: 'driving',
+        duration: route.duration,
+        distance: route.distance,
+        cost: 0, // Driving cost not calculated
+        transfers: route.transfers || 0,
+        steps: [{
+          type: 'driving',
+          from: routeStart!,
+          to: routeDestination!,
+          fromName: lang === 'ur' ? 'شروع' : 'Start',
+          toName: destinationInput || (lang === 'ur' ? 'منزل' : 'Destination'),
+          duration: route.duration,
+          distance: route.distance,
+          instruction: lang === 'ur' ? 'ڈرائیونگ' : 'Drive',
+        }],
+        geometry: route.geometry,
+        isBest: index === 0,
+      });
+    });
+
+    // Add multi-modal routes
+    multiModalRoutes.forEach((route, index) => {
+      routes.push({
+        id: `multimodal-${route.id}`,
+        type: 'multimodal',
+        duration: route.totalTime * 60, // Convert minutes to seconds
+        distance: route.totalDistance,
+        cost: route.totalFare,
+        transfers: route.transfers,
+        steps: route.steps.map(step => ({
+          type: step.type === 'walk' ? 'walk' : step.type === 'speedo' ? 'bus' : 'metro',
+          from: step.from,
+          to: step.to,
+          fromName: step.fromName,
+          toName: step.toName,
+          duration: step.time * 60, // Convert minutes to seconds
+          distance: step.distance,
+          instruction: step.instruction,
+        })),
+        isBest: index === 0 && mapboxRoutes.length === 0,
+      });
+    });
+
+    // Add transit routes (legacy)
+    routeSuggestions.forEach((suggestion, index) => {
+      // For transit routes, we need to approximate coordinates
+      // Use routeStart/routeDestination as fallbacks since steps only have station names
+      const allStations = getAllStations();
+      const getStationCoordinate = (stationName: string): Coordinate => {
+        const station = allStations.find(s => 
+          s.name.toLowerCase().includes(stationName.toLowerCase()) ||
+          s.nameUrdu?.toLowerCase().includes(stationName.toLowerCase())
+        );
+        return station ? { lat: station.lat, lng: station.lng } : (routeStart || { lat: 0, lng: 0 });
+      };
+
+      routes.push({
+        id: `transit-${suggestion.id}`,
+        type: 'transit',
+        duration: suggestion.estimatedTime * 60, // Convert minutes to seconds
+        distance: (suggestion.totalDistance || 0) * 1000, // Convert km to meters
+        cost: suggestion.totalFare,
+        transfers: Math.max(0, suggestion.steps.filter(s => s.type !== 'walk').length - 1),
+        steps: suggestion.steps.map((step, stepIndex) => {
+          // Use routeStart for first step, routeDestination for last, or approximate
+          const fromCoord = stepIndex === 0 
+            ? (routeStart || getStationCoordinate(step.from))
+            : getStationCoordinate(step.from);
+          const toCoord = stepIndex === suggestion.steps.length - 1
+            ? (routeDestination || getStationCoordinate(step.to))
+            : getStationCoordinate(step.to);
+
+          return {
+            type: step.type === 'walk' ? 'walk' : step.type === 'metro' ? 'metro' : 'bus',
+            from: fromCoord,
+            to: toCoord,
+            fromName: lang === 'ur' ? (step.fromUrdu || step.from) : step.from,
+            toName: lang === 'ur' ? (step.toUrdu || step.to) : step.to,
+            duration: step.time * 60, // Convert minutes to seconds
+            distance: step.distance * 1000, // Convert km to meters
+            instruction: `${lang === 'ur' ? (step.fromUrdu || step.from) : step.from} → ${lang === 'ur' ? (step.toUrdu || step.to) : step.to}`,
+          };
+        }),
+        isBest: index === 0 && mapboxRoutes.length === 0 && multiModalRoutes.length === 0,
+      });
+    });
+
+    // Sort by duration (fastest first)
+    return routes.sort((a, b) => a.duration - b.duration);
+  };
+
+  // Handle route selection from bottom sheet
+  const handleRouteBottomSheetSelect = (routeId: string) => {
+    setSelectedRouteBottomSheetId(routeId);
+    setShowMap(true);
+
+    // Find and select the corresponding route
+    if (routeId.startsWith('mapbox-')) {
+      const mapboxId = routeId.replace('mapbox-', '');
+      const route = mapboxRoutes.find(r => r.id === mapboxId);
+      if (route) {
+        setSelectedMapboxRoute(route);
+        setSelectedRoute(null);
+        setSelectedMultiModalRoute(null);
+      }
+    } else if (routeId.startsWith('multimodal-')) {
+      const multimodalId = routeId.replace('multimodal-', '');
+      const route = multiModalRoutes.find(r => r.id === multimodalId);
+      if (route) {
+        setSelectedMultiModalRoute(route);
+        setSelectedMapboxRoute(null);
+        setSelectedRoute(null);
+      }
+    } else if (routeId.startsWith('transit-')) {
+      const transitId = routeId.replace('transit-', '');
+      const route = routeSuggestions.find(r => r.id === transitId);
+      if (route) {
+        setSelectedRoute(route);
+        setSelectedMapboxRoute(null);
+        setSelectedMultiModalRoute(null);
+      }
+    }
+
+    // Scroll to map
+    setTimeout(() => {
+      const mapElement = document.querySelector('[data-map-container]');
+      if (mapElement) {
+        mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
+  // Show bottom sheet when routes are found
+  useEffect(() => {
+    const allRoutes = getAllRoutesForBottomSheet();
+    if (allRoutes.length > 0 && !isLoadingRoutes) {
+      setShowRouteBottomSheet(true);
+    }
+  }, [mapboxRoutes, multiModalRoutes, routeSuggestions, isLoadingRoutes]);
 
   return (
     <div className="min-h-screen pb-20" style={{ background: '#F8FAFC' }}>
@@ -300,7 +451,7 @@ export const BestRoutePage: React.FC = () => {
                         if (parsedDestination) {
                           setRouteDestination(parsedDestination);
                           const suggestions = findRoutes(routeStart || userLocation!, parsedDestination, lang);
-                          const scoredRoutes = scoreAndRankRoutes(suggestions, preference);
+                          const scoredRoutes = scoreAndRankRoutes(suggestions);
                           setRouteSuggestions(scoredRoutes);
                           if (scoredRoutes.length > 0) {
                             setSelectedRoute(scoredRoutes[0]);
@@ -335,10 +486,10 @@ export const BestRoutePage: React.FC = () => {
                 onClick={() => {
                   setPreference(pref);
                   if (routeSuggestions.length > 0) {
-                    const rescored = scoreAndRankRoutes(
-                      routeSuggestions.map(r => ({ ...r, score: 0, ranking: 0, reasons: [] })),
-                      pref
-                    );
+                    // Re-score routes (preference selector kept for UI, but scoring uses fixed formula)
+                    // Convert ScoredRoute back to RouteSuggestion for re-scoring
+                    const baseRoutes = routeSuggestions.map(({ score, ranking, reasons, metrics, ...route }) => route);
+                    const rescored = scoreAndRankRoutes(baseRoutes);
                     setRouteSuggestions(rescored);
                     setSelectedRoute(rescored[0]);
                   }
@@ -749,6 +900,21 @@ export const BestRoutePage: React.FC = () => {
           </div>
         )}
       </BottomSheet>
+
+      {/* Route Bottom Sheet (Uber/Google Maps Style) */}
+      <RouteBottomSheet
+        isOpen={showRouteBottomSheet}
+        onClose={() => setShowRouteBottomSheet(false)}
+        routes={getAllRoutesForBottomSheet()}
+        selectedRouteId={selectedRouteBottomSheetId}
+        onRouteSelect={handleRouteBottomSheetSelect}
+        onRouteExpand={(routeId) => {
+          handleRouteBottomSheetSelect(routeId);
+        }}
+        lang={lang}
+        routeStart={routeStart}
+        routeDestination={routeDestination}
+      />
     </div>
   );
 };

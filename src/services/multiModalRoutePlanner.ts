@@ -13,9 +13,9 @@
  */
 
 import { Coordinate } from '../types';
-import { speedoRoutes, searchByStop } from '../data/speedoRoutes';
+import { speedoRoutes } from '../data/speedoRoutes';
 import { metroStops, isMetroStop } from '../data/metroStops';
-import { getAllStations, findNearestStop } from '../data/transitData';
+import { getAllStations } from '../data/transitData';
 import { calculateDistance } from './mapService';
 
 // =====================================================
@@ -67,7 +67,7 @@ const WALKING_FARE = 0; // Free
 const SPEEDO_FARE = 30; // PKR per trip
 const METRO_FARE = 50; // PKR per trip
 
-const MAX_WALKING_DISTANCE = 2000; // 2km max walking segment
+// const MAX_WALKING_DISTANCE = 2000; // 2km max walking segment (unused)
 
 // =====================================================
 // HELPER FUNCTIONS
@@ -187,21 +187,23 @@ function findSpeedoRoute(fromStop: string, toStop: string): typeof speedoRoutes[
 
 /**
  * Find all Speedo routes from a stop
+ * Reserved for future use
  */
-function findSpeedoRoutesFrom(stop: string): typeof speedoRoutes {
-  return speedoRoutes.filter(route => 
-    route.from.toLowerCase().includes(stop.toLowerCase())
-  );
-}
+// function _findSpeedoRoutesFrom(stop: string): typeof speedoRoutes {
+//   return speedoRoutes.filter(route => 
+//     route.from.toLowerCase().includes(stop.toLowerCase())
+//   );
+// }
 
 /**
  * Find all Speedo routes to a stop
+ * Reserved for future use
  */
-function findSpeedoRoutesTo(stop: string): typeof speedoRoutes {
-  return speedoRoutes.filter(route => 
-    route.to.toLowerCase().includes(stop.toLowerCase())
-  );
-}
+// function _findSpeedoRoutesTo(stop: string): typeof speedoRoutes {
+//   return speedoRoutes.filter(route => 
+//     route.to.toLowerCase().includes(stop.toLowerCase())
+//   );
+// }
 
 // =====================================================
 // ROUTE PLANNING
@@ -612,8 +614,8 @@ function findMetroSpeedoRoutes(
  * Find routes with multiple transfers (Speedo → Metro → Speedo)
  */
 function findMultiTransferRoutes(
-  origin: Coordinate,
-  destination: Coordinate
+  _origin: Coordinate,
+  _destination: Coordinate
 ): MultiModalRoute[] {
   const routes: MultiModalRoute[] = [];
 
