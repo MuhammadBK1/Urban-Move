@@ -99,25 +99,29 @@ export const UserInfoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: '#F7F9FC' }}>
+    <div className="min-h-screen" style={{ background: '#F8FAFC' }}>
       <AppHeader title={lang === 'ur' ? 'پروفائل' : 'Profile'} />
-      <div className="max-w-2xl mx-auto px-4 py-6 pb-20">
+      <div className="max-w-2xl mx-auto px-4 py-8 pb-24">
 
         {/* Profile Picture Card */}
-        <div className="card mb-4">
-          <label className="block text-sm font-medium mb-3" style={{ color: '#1F2937' }}>
+        <div className="card mb-6">
+          <label className="block text-sm font-semibold mb-4" style={{ color: '#0F172A' }}>
             {lang === 'ur' ? 'پروفائل تصویر' : 'Profile Picture'}
-            <span className="ml-1" style={{ color: '#6B7280' }}>({lang === 'ur' ? 'اختیاری' : 'Optional'})</span>
+            <span className="ml-2 text-xs font-normal" style={{ color: '#64748B' }}>({lang === 'ur' ? 'اختیاری' : 'Optional'})</span>
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <div 
-              className="w-24 h-24 rounded-full flex items-center justify-center overflow-hidden shadow-md"
-              style={{ background: 'linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)' }}
+              className="w-28 h-28 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0"
+              style={{ 
+                background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
+                boxShadow: '0 2px 8px rgba(15, 157, 88, 0.12)',
+                border: '3px solid white'
+              }}
             >
               {profileImagePreview ? (
                 <img src={profileImagePreview} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-4xl">👤</span>
+                <span className="text-5xl">👤</span>
               )}
             </div>
             <label className="flex-1">
@@ -127,7 +131,7 @@ export const UserInfoPage: React.FC = () => {
                 onChange={handleImageUpload}
                 className="hidden"
               />
-              <div className="btn-secondary text-center">
+              <div className="btn-secondary text-center text-sm py-3">
                 {lang === 'ur' ? 'تصویر منتخب کریں' : 'Choose Image'}
               </div>
             </label>
@@ -135,10 +139,10 @@ export const UserInfoPage: React.FC = () => {
         </div>
 
         {/* User Info Form */}
-        <div className="card space-y-5">
+        <div className="card space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: '#1F2937' }}>
-              {lang === 'ur' ? 'نام' : 'Name'} <span className="text-red-500">*</span>
+            <label htmlFor="name" className="block text-sm font-semibold mb-3" style={{ color: '#0F172A' }}>
+              {lang === 'ur' ? 'نام' : 'Name'} <span className="text-red-500 font-normal">*</span>
             </label>
             <input
               id="name"
@@ -151,8 +155,8 @@ export const UserInfoPage: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium mb-2" style={{ color: '#1F2937' }}>
-              {lang === 'ur' ? 'فون نمبر' : 'Phone Number'} <span className="text-red-500">*</span>
+            <label htmlFor="phone" className="block text-sm font-semibold mb-3" style={{ color: '#0F172A' }}>
+              {lang === 'ur' ? 'فون نمبر' : 'Phone Number'} <span className="text-red-500 font-normal">*</span>
             </label>
             <input
               id="phone"
@@ -165,8 +169,8 @@ export const UserInfoPage: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-sm font-medium mb-2" style={{ color: '#1F2937' }}>
-              {lang === 'ur' ? 'گھر کا پتہ' : 'Home Address'} <span className="text-red-500">*</span>
+            <label htmlFor="address" className="block text-sm font-semibold mb-3" style={{ color: '#0F172A' }}>
+              {lang === 'ur' ? 'گھر کا پتہ' : 'Home Address'} <span className="text-red-500 font-normal">*</span>
             </label>
             <div className="space-y-3">
               <textarea
@@ -180,7 +184,7 @@ export const UserInfoPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowMapPicker(!showMapPicker)}
-                className="w-full btn-secondary text-sm"
+                className="w-full btn-secondary text-sm py-3"
               >
                 {showMapPicker 
                   ? (lang === 'ur' ? '🗺️ نقشہ چھپائیں' : '🗺️ Hide Map')
@@ -199,7 +203,7 @@ export const UserInfoPage: React.FC = () => {
 
           <button
             onClick={handleSave}
-            className="w-full btn-primary mt-6"
+            className="w-full btn-primary mt-8"
           >
             {lang === 'ur' ? 'محفوظ کریں' : 'Save Information'}
           </button>

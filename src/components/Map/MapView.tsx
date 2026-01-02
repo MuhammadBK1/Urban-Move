@@ -144,6 +144,30 @@ interface MapViewProps {
   routeDestination?: Coordinate | null;
   // Filter visible routes
   visibleRouteIds?: string[];
+  // Mapbox route option (for Uber-style routing)
+  selectedRouteOption?: {
+    id: string;
+    geometry: GeoJSON.LineString;
+    distance: number;
+    duration: number;
+  } | null;
+  // Callback when route is selected
+  onRouteOptionSelect?: (routeId: string) => void;
+  // Multi-modal route for highlighting
+  selectedMultiModalRoute?: {
+    steps: Array<{
+      type: 'walk' | 'speedo' | 'metro';
+      from: Coordinate;
+      to: Coordinate;
+      fromName: string;
+      toName: string;
+    }>;
+    transferPoints: Array<{
+      location: Coordinate;
+      name: string;
+      type: 'speedo-stop' | 'metro-station';
+    }>;
+  } | null;
 }
 
 // =====================================================
@@ -160,6 +184,9 @@ export const MapView: React.FC<MapViewProps> = ({
   routeStart = null,
   routeDestination = null,
   visibleRouteIds,
+  selectedRouteOption = null,
+  onRouteOptionSelect,
+  selectedMultiModalRoute = null,
 }) => {
   // TEMPORARY DEBUG: Log environment variables at component level
   console.log('🔍 MapView Component - Environment Check:');
@@ -1420,11 +1447,96 @@ export const MapView: React.FC<MapViewProps> = ({
     }
   }, [mapLoaded, lang]);
 
-  // Effect to handle route start/destination changes
-  useEffect(() => {
+  // Clear route helper
+  const clearRoute = useCallback(() => {
+    if (!mapRef.current) return;
+    if (routeLayerRef.current) {
+      const layerId = routeLayerRef.current;
+      const sourceId = 'route-source';
+      if (mapRef.current.getLayer(layerId)) {
+        mapRef.current.removeLayer(layerId);
+      }
+      if (mapRef.current.getSource(sourceId)) {
+        mapRef.current.removeSource(sourceId);
+      }
+      routeLayerRef.current = null;
+    }
+  }, []);
+
+  // Draw route from geometry (Uber-style)
+  const drawRouteFromGeometry = useCallback((geometry: GeoJSON.LineString, color: string = '#1A73E8', width: number = 5) => {
     if (!mapRef.current || !mapLoaded) return;
 
-    // Clean up existing markers and route
+    try {
+      clearRoute();
+
+      const sourceId = 'route-source';
+      const layerId = 'route-layer';
+
+      if (mapRef.current.getSource(sourceId)) {
+        (mapRef.current.getSource(sourceId) as mapboxgl.GeoJSONSource).setData({
+          type: 'Feature',
+          properties: {},
+          geometry,
+        });
+      } else {
+        mapRef.current.addSource(sourceId, {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry,
+          },
+        });
+      }
+
+      if (!mapRef.current.getLayer(layerId)) {
+        mapRef.current.addLayer({
+          id: layerId,
+          type: 'line',
+          source: sourceId,
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': color,
+            'line-width': width,
+            'line-opacity': 0.9,
+          },
+        });
+      } else {
+        mapRef.current.setPaintProperty(layerId, 'line-color', color);
+        mapRef.current.setPaintProperty(layerId, 'line-width', width);
+      }
+
+      routeLayerRef.current = layerId;
+
+      // Fit map to route bounds with smooth animation
+      const coordinates = geometry.coordinates as [number, number][];
+      if (coordinates.length > 0) {
+        const bounds = coordinates.reduce(
+          (bounds, coord) => bounds.extend(coord as [number, number]),
+          new mapboxgl.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number])
+        );
+
+        mapRef.current.fitBounds(bounds, {
+          padding: { top: 100, bottom: 100, left: 50, right: 50 },
+          duration: 1500,
+          easing: (t: number) => t * (2 - t),
+        });
+      }
+    } catch (error) {
+      console.error('Error drawing route:', error);
+    }
+  }, [mapLoaded, clearRoute]);
+
+  // Effect to handle route start/destination changes (legacy)
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded) return;
+    if (selectedRouteOption) return; // Don't draw legacy route if Uber-style route is selected
+
+    // Clean up existing markers
     if (startMarkerRef.current) {
       startMarkerRef.current.remove();
       startMarkerRef.current = null;
@@ -1433,25 +1545,170 @@ export const MapView: React.FC<MapViewProps> = ({
       destinationMarkerRef.current.remove();
       destinationMarkerRef.current = null;
     }
-    if (routeLayerRef.current) {
-      const layerId = routeLayerRef.current;
-      if (mapRef.current.getLayer(layerId)) {
-        mapRef.current.removeLayer(layerId);
-      }
-      const sourceId = 'route-source';
-      if (mapRef.current.getSource(sourceId)) {
-        mapRef.current.removeSource(sourceId);
-      }
-      routeLayerRef.current = null;
-    }
 
-    // Create markers and draw route if both are provided
+    // Create markers if both are provided
     if (routeStart && routeDestination) {
       createStartMarker(routeStart);
       createDestinationMarker(routeDestination);
-      drawRoute(routeStart, routeDestination);
     }
-  }, [routeStart, routeDestination, mapLoaded, createStartMarker, createDestinationMarker, drawRoute]);
+  }, [routeStart, routeDestination, mapLoaded, createStartMarker, createDestinationMarker, selectedRouteOption]);
+
+  // Effect to handle selected route option (Uber-style)
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded || !selectedRouteOption) return;
+
+    // Draw selected route
+    drawRouteFromGeometry(selectedRouteOption.geometry, '#1A73E8', 5);
+
+    // Ensure markers are visible
+    if (routeStart) {
+      createStartMarker(routeStart);
+    }
+    if (routeDestination) {
+      createDestinationMarker(routeDestination);
+    }
+  }, [selectedRouteOption, mapLoaded, routeStart, routeDestination, createStartMarker, createDestinationMarker, drawRouteFromGeometry]);
+
+  // Transfer markers ref
+  const transferMarkersRef = useRef<Map<string, mapboxgl.Marker>>(new Map());
+
+  // Effect to handle multi-modal route (highlight stations/stops)
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded || !selectedMultiModalRoute) {
+      // Cleanup if route is cleared
+      transferMarkersRef.current.forEach(marker => marker.remove());
+      transferMarkersRef.current.clear();
+      return;
+    }
+
+    // Clear previous transfer markers
+    transferMarkersRef.current.forEach(marker => marker.remove());
+    transferMarkersRef.current.clear();
+
+    // Highlight transfer points
+    selectedMultiModalRoute.transferPoints.forEach((transfer, index) => {
+      const el = document.createElement('div');
+      el.className = 'transfer-marker';
+      el.style.cssText = `
+        width: 24px;
+        height: 24px;
+        background: ${transfer.type === 'metro-station' ? '#FF6F00' : '#9C27B0'};
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        cursor: pointer;
+      `;
+
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat([transfer.location.lng, transfer.location.lat])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`
+              <div style="padding: 8px;">
+                <div style="font-weight: 600; color: ${transfer.type === 'metro-station' ? '#FF6F00' : '#9C27B0'};">
+                  ${transfer.name}
+                </div>
+                <div style="font-size: 12px; color: #666; margin-top: 4px;">
+                  ${lang === 'ur' ? 'تبدیلی کا مقام' : 'Transfer Point'}
+                </div>
+              </div>
+            `)
+        )
+        .addTo(mapRef.current!);
+
+      transferMarkersRef.current.set(`transfer-${index}`, marker);
+    });
+
+    // Draw route segments
+    selectedMultiModalRoute.steps.forEach((step, index) => {
+      const color = step.type === 'walk' ? '#9E9E9E' : 
+                    step.type === 'speedo' ? '#9C27B0' : 
+                    '#FF6F00';
+      const width = step.type === 'walk' ? 3 : 5;
+
+      const sourceId = `route-segment-${index}`;
+      const layerId = `route-segment-layer-${index}`;
+
+      // Remove existing if any
+      if (mapRef.current.getLayer(layerId)) {
+        mapRef.current.removeLayer(layerId);
+      }
+      if (mapRef.current.getSource(sourceId)) {
+        mapRef.current.removeSource(sourceId);
+      }
+
+      mapRef.current.addSource(sourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [step.from.lng, step.from.lat],
+              [step.to.lng, step.to.lat]
+            ]
+          }
+        }
+      });
+
+      mapRef.current.addLayer({
+        id: layerId,
+        type: 'line',
+        source: sourceId,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+        },
+        paint: {
+          'line-color': color,
+          'line-width': width,
+          'line-opacity': 0.8,
+          'line-dasharray': step.type === 'walk' ? [2, 2] : undefined,
+        },
+      });
+    });
+
+    // Fit bounds to show entire route
+    if (selectedMultiModalRoute.steps.length > 0) {
+      const allCoords: [number, number][] = [];
+      selectedMultiModalRoute.steps.forEach(step => {
+        allCoords.push([step.from.lng, step.from.lat]);
+        allCoords.push([step.to.lng, step.to.lat]);
+      });
+      selectedMultiModalRoute.transferPoints.forEach(transfer => {
+        allCoords.push([transfer.location.lng, transfer.location.lat]);
+      });
+
+      if (allCoords.length > 0) {
+        const bounds = allCoords.reduce(
+          (bounds, coord) => bounds.extend(coord),
+          new mapboxgl.LngLatBounds(allCoords[0], allCoords[0])
+        );
+
+        mapRef.current.fitBounds(bounds, {
+          padding: { top: 100, bottom: 100, left: 50, right: 50 },
+          duration: 1500,
+        });
+      }
+    }
+
+    // Cleanup function
+    return () => {
+      transferMarkersRef.current.forEach(marker => marker.remove());
+      transferMarkersRef.current.clear();
+      selectedMultiModalRoute.steps.forEach((_, index) => {
+        const sourceId = `route-segment-${index}`;
+        const layerId = `route-segment-layer-${index}`;
+        if (mapRef.current?.getLayer(layerId)) {
+          mapRef.current.removeLayer(layerId);
+        }
+        if (mapRef.current?.getSource(sourceId)) {
+          mapRef.current.removeSource(sourceId);
+        }
+      });
+    };
+  }, [selectedMultiModalRoute, mapLoaded, lang]);
 
   // =====================================================
   // HIGHLIGHT SELECTED ROUTE

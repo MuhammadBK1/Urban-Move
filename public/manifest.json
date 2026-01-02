@@ -1,0 +1,44 @@
+{
+  "name": "Urban Move",
+  "short_name": "Urban Move",
+  "description": "Real-time public transit tracker for Pakistan. Track Metro Bus, Orange Line, and official bus services.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0F9D58",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "navigation", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Find Route",
+      "short_name": "Route",
+      "description": "Find the best route to your destination",
+      "url": "/best-route",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Map",
+      "short_name": "Map",
+      "description": "View transit map",
+      "url": "/map",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" }]
+    }
+  ]
+}
+

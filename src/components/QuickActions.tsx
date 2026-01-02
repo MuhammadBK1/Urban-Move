@@ -143,8 +143,8 @@ export const QuickActions: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-4 mb-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+    <div className="card mb-4">
+      <h3 className="text-sm font-semibold mb-3" style={{ color: '#0F172A' }}>
         {lang === 'ur' ? 'فوری اقدامات' : 'Quick Actions'}
       </h3>
       <div className="flex flex-wrap gap-2">
@@ -152,8 +152,8 @@ export const QuickActions: React.FC = () => {
           <button
             key={index}
             onClick={action.action}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:shadow-md transition-all text-sm font-medium"
-            style={{ background: 'linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)', color: '#0F9D58' }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg hover:shadow-sm transition-all text-sm font-medium"
+            style={{ background: '#F0FDF4', color: '#0F9D58', border: '1px solid #BBF7D0' }}
           >
             <span>{action.icon}</span>
             <span>{action.label}</span>

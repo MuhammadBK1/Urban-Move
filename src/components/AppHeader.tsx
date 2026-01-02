@@ -39,9 +39,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   const displayTitle = title || TRANSLATIONS.appName[lang];
 
   return (
-    <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-100">
-      <div className="flex items-center justify-between px-4 py-3 max-w-2xl mx-auto">
-        <h1 className="text-xl font-bold flex-1" style={{ color: '#0F9D58' }}>
+    <header className="sticky top-0 z-40" style={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid #E2E8F0' }}>
+      <div className="flex items-center justify-between px-4 py-4 max-w-2xl mx-auto">
+        <h1 className="text-xl font-semibold flex-1" style={{ color: '#0F172A', letterSpacing: '-0.02em' }}>
           {displayTitle}
         </h1>
 

@@ -51,6 +51,9 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 500,
     },
     
+    // PWA: Copy manifest and icons to dist
+    publicDir: 'public',
+    
     // Environment variables prefix
     envPrefix: 'VITE_',
   };

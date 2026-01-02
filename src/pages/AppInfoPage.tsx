@@ -55,7 +55,7 @@ export const AppInfoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20" style={{ background: '#F7F9FC' }}>
+    <div className="min-h-screen pb-20" style={{ background: '#F8FAFC' }}>
       <AppHeader title={lang === 'ur' ? 'معلومات' : 'Info'} />
       <div className="max-w-2xl mx-auto px-4 py-6">
 

@@ -21,9 +21,10 @@ import {
   AppInfoPage,
   LoginPage
 } from './pages';
-import { BottomNavigation, ProtectedRoute } from './components';
+import { BottomNavigation, ProtectedRoute, InstallPrompt } from './components';
 import { initializeFirebase, isFirebaseConfigured } from './firebase/config';
 import { useApp } from './context/AppContext';
+import { registerServiceWorker, setupInstallPrompt } from './utils/pwaService';
 
 // =====================================================
 // APP COMPONENT
@@ -44,6 +45,12 @@ const App: React.FC = () => {
     } else {
       console.log('🚀 Urban-Move Web started (using local data)');
     }
+  }, []);
+
+  // Register PWA service worker and setup install prompt
+  useEffect(() => {
+    registerServiceWorker();
+    setupInstallPrompt();
   }, []);
 
   // Apply high contrast if enabled
@@ -117,6 +124,9 @@ const App: React.FC = () => {
       
       {/* Bottom Navigation (hidden on login and route details page) */}
       <BottomNavigation />
+      
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </div>
   );
 };

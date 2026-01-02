@@ -27,4 +27,5 @@ export { MapPicker } from './MapPicker';
 export { BottomSheet } from './BottomSheet';
 export { QuickActions } from './QuickActions';
 export { TripAssistant } from './TripAssistant';
+export { InstallPrompt } from './InstallPrompt';
 

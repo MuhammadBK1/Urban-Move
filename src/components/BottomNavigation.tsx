@@ -47,32 +47,34 @@ export const BottomNavigation: React.FC = () => {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white z-50 shadow-lg border-t border-gray-100">
-      <div className="flex justify-around items-center h-16 max-w-2xl mx-auto">
-        {navItems.map((item) => {
-          const active = isActive(item.path);
-          return (
-            <button
-              key={item.path}
-              onClick={() => navigate(item.path)}
-              className={`relative flex flex-col items-center justify-center flex-1 h-full transition-all duration-200 ${
-                active
-                  ? 'text-[#0F9D58]'
-                  : 'text-[#6B7280] hover:text-[#1F2937]'
-              }`}
-            >
-              <span className={`text-2xl mb-1 transition-transform duration-200 ${active ? 'scale-110' : ''}`}>
-                {item.icon}
-              </span>
-              <span className={`text-xs font-medium transition-colors ${active ? 'font-semibold' : ''}`}>
-                {lang === 'ur' ? item.labelUr : item.labelEn}
-              </span>
-              {active && (
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-[#0F9D58] rounded-t-full transition-all duration-200" />
-              )}
-            </button>
-          );
-        })}
+    <nav className="fixed bottom-0 left-0 right-0 z-50" style={{ background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(20px)' }}>
+      <div className="max-w-2xl mx-auto border-t" style={{ borderColor: '#E2E8F0' }}>
+        <div className="flex justify-around items-center h-16 px-2">
+          {navItems.map((item) => {
+            const active = isActive(item.path);
+            return (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className={`relative flex flex-col items-center justify-center flex-1 h-full transition-all duration-200 ${
+                  active
+                    ? 'text-[#0F9D58]'
+                    : 'text-[#64748B] hover:text-[#334155]'
+                }`}
+              >
+                <span className={`text-xl mb-0.5 transition-all duration-200 ${active ? 'scale-110' : 'scale-100'}`}>
+                  {item.icon}
+                </span>
+                <span className={`text-[10px] font-medium transition-all ${active ? 'font-semibold' : 'font-normal'}`} style={{ letterSpacing: '0.02em' }}>
+                  {lang === 'ur' ? item.labelUr : item.labelEn}
+                </span>
+                {active && (
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 rounded-full transition-all duration-200" style={{ background: '#0F9D58' }} />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );

@@ -89,7 +89,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#F7F9FC' }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#F8FAFC' }}>
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
