@@ -1,22 +1,39 @@
 {
   "name": "urban-move",
   "version": "1.0.0",
-  "main": "index.ts",
+  "description": "Real-time Public Transit Tracker for Pakistan",
+  "type": "module",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "expo": "~54.0.30",
-    "expo-status-bar": "~3.0.9",
-    "react": "19.1.0",
-    "react-native": "0.81.5"
+    "firebase": "^12.7.0",
+    "mapbox-gl": "^3.17.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.6.1"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
-    "typescript": "~5.9.2"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.7.2",
+    "vite": "^6.3.5"
   },
-  "private": true
+  "keywords": [
+    "transit",
+    "pakistan",
+    "metro",
+    "bus",
+    "tracking"
+  ],
+  "author": "Urban Move Team",
+  "license": "MIT"
 }

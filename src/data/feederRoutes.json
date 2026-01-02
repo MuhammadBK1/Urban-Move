@@ -1,0 +1,173 @@
+{
+  "routes": [
+    {
+      "id": "feeder-johar-gulberg",
+      "name": "Johar Town ↔ Gulberg Metro",
+      "nameUrdu": "جوہر ٹاؤن ↔ گلبرگ میٹرو",
+      "vehicleType": "bus",
+      "color": "#2196F3",
+      "fare": 50,
+      "avgSpeed": 25,
+      "frequency": "10-15 min",
+      "connectsTo": "ol-11",
+      "waypoints": [
+        { "lat": 31.4689, "lng": 74.3267, "name": "Johar Town" },
+        { "lat": 31.4750, "lng": 74.3050, "name": "Johar Town H Block" },
+        { "lat": 31.4820, "lng": 74.3150, "name": "COMSATS University" },
+        { "lat": 31.4900, "lng": 74.3280, "name": "Canal Road" },
+        { "lat": 31.5050, "lng": 74.3400, "name": "Liberty Market" },
+        { "lat": 31.5146, "lng": 74.3507, "name": "Gulberg Metro Station" }
+      ]
+    },
+    {
+      "id": "feeder-model-gpo",
+      "name": "Model Town ↔ GPO Metro",
+      "nameUrdu": "ماڈل ٹاؤن ↔ جی پی او میٹرو",
+      "vehicleType": "bus",
+      "color": "#4CAF50",
+      "fare": 40,
+      "avgSpeed": 30,
+      "frequency": "12-18 min",
+      "connectsTo": "mb-11",
+      "waypoints": [
+        { "lat": 31.4835, "lng": 74.3253, "name": "Model Town Link Road" },
+        { "lat": 31.4950, "lng": 74.3200, "name": "Faisal Town" },
+        { "lat": 31.5100, "lng": 74.3180, "name": "Garden Town" },
+        { "lat": 31.5250, "lng": 74.3200, "name": "Jail Road" },
+        { "lat": 31.5400, "lng": 74.3210, "name": "Shimla Hill" },
+        { "lat": 31.5494, "lng": 74.3227, "name": "GPO Metro Station" }
+      ]
+    },
+    {
+      "id": "feeder-thokar-ichra",
+      "name": "Thokar Niaz Baig ↔ Ichra Metro",
+      "nameUrdu": "ٹھوکر نیاز بیگ ↔ اچھرا میٹرو",
+      "vehicleType": "bus",
+      "color": "#FF9800",
+      "fare": 30,
+      "avgSpeed": 20,
+      "frequency": "8-12 min",
+      "connectsTo": "ol-13",
+      "waypoints": [
+        { "lat": 31.4765, "lng": 74.3356, "name": "Thokar Niaz Baig" },
+        { "lat": 31.4800, "lng": 74.3300, "name": "Canal Bank Road" },
+        { "lat": 31.4850, "lng": 74.3400, "name": "Ferozepur Road" },
+        { "lat": 31.4923, "lng": 74.3534, "name": "Ichra Metro Station" }
+      ]
+    },
+    {
+      "id": "feeder-dha-gulberg",
+      "name": "DHA Phase 5 ↔ Gulberg Metro",
+      "nameUrdu": "ڈی ایچ اے فیز 5 ↔ گلبرگ میٹرو",
+      "vehicleType": "bus",
+      "color": "#9C27B0",
+      "fare": 60,
+      "avgSpeed": 35,
+      "frequency": "15-20 min",
+      "connectsTo": "ol-11",
+      "waypoints": [
+        { "lat": 31.4678, "lng": 74.4012, "name": "DHA Phase 5 Commercial" },
+        { "lat": 31.4734, "lng": 74.3856, "name": "DHA Phase 3" },
+        { "lat": 31.4812, "lng": 74.3712, "name": "Cavalry Ground" },
+        { "lat": 31.4945, "lng": 74.3578, "name": "MM Alam Road" },
+        { "lat": 31.5056, "lng": 74.3523, "name": "Husain Chowk" },
+        { "lat": 31.5146, "lng": 74.3507, "name": "Gulberg Metro Station" }
+      ]
+    },
+    {
+      "id": "feeder-railway-bhatti",
+      "name": "Railway Station ↔ Bhatti Chowk Metro",
+      "nameUrdu": "ریلوے اسٹیشن ↔ بھٹی چوک میٹرو",
+      "vehicleType": "bus",
+      "color": "#E91E63",
+      "fare": 30,
+      "avgSpeed": 25,
+      "frequency": "10-15 min",
+      "connectsTo": "mb-16",
+      "waypoints": [
+        { "lat": 31.5668, "lng": 74.3127, "name": "Railway Station" },
+        { "lat": 31.5745, "lng": 74.3086, "name": "Niazi Chowk" },
+        { "lat": 31.5823, "lng": 74.3024, "name": "Azadi Chowk" },
+        { "lat": 31.5892, "lng": 74.2967, "name": "Bhatti Chowk Metro Station" }
+      ]
+    },
+    {
+      "id": "feeder-kalma-qartaba",
+      "name": "Kalma Chowk ↔ Qartaba Chowk Metro",
+      "nameUrdu": "کلمہ چوک ↔ قرطبہ چوک میٹرو",
+      "vehicleType": "bus",
+      "color": "#00BCD4",
+      "fare": 25,
+      "avgSpeed": 28,
+      "frequency": "8-12 min",
+      "connectsTo": "mb-9",
+      "waypoints": [
+        { "lat": 31.5044, "lng": 74.3388, "name": "Kalma Chowk" },
+        { "lat": 31.5128, "lng": 74.3447, "name": "MAO College" },
+        { "lat": 31.5207, "lng": 74.3498, "name": "Qartaba Chowk Metro Station" }
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "v-b1",
+      "routeId": "feeder-johar-gulberg",
+      "plateNumber": "LHR-1234",
+      "driverName": "Ali Ahmed",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 25,
+      "crowdedness": "moderate"
+    },
+    {
+      "id": "v-b2",
+      "routeId": "feeder-model-gpo",
+      "plateNumber": "LHR-5678",
+      "driverName": "Hassan Khan",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 15,
+      "crowdedness": "low"
+    },
+    {
+      "id": "v-b3",
+      "routeId": "feeder-thokar-ichra",
+      "plateNumber": "LHR-9012",
+      "driverName": "Usman Malik",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 35,
+      "crowdedness": "moderate"
+    },
+    {
+      "id": "v-b4",
+      "routeId": "feeder-dha-gulberg",
+      "plateNumber": "LHR-3456",
+      "driverName": "Imran Shah",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 40,
+      "crowdedness": "full"
+    },
+    {
+      "id": "v-b5",
+      "routeId": "feeder-railway-bhatti",
+      "plateNumber": "LHR-7890",
+      "driverName": "Bilal Ahmad",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 20,
+      "crowdedness": "low"
+    },
+    {
+      "id": "v-b6",
+      "routeId": "feeder-kalma-qartaba",
+      "plateNumber": "LHR-2468",
+      "driverName": "Tariq Mehmood",
+      "vehicleType": "bus",
+      "capacity": 40,
+      "currentOccupancy": 30,
+      "crowdedness": "moderate"
+    }
+  ]
+}

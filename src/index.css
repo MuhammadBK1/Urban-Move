@@ -1,0 +1,375 @@
+/**
+ * =====================================================
+ * URBAN-MOVE GLOBAL STYLES
+ * =====================================================
+ */
+
+/* Tailwind CSS v3 Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================
+   BASE STYLES
+   ===================================================== */
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: #F7F9FC;
+    color: #1F2937;
+  }
+
+  html {
+    font-family: Inter, Arial, sans-serif;
+  }
+
+  [lang="ur"], .urdu-text, .text-urdu {
+    font-family: 'Noto Nastaliq Urdu', 'Noto Sans', serif;
+    direction: rtl;
+    text-align: right;
+  }
+
+  html, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  button {
+    border: none;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 44px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *:focus {
+    outline: none;
+  }
+
+  *:focus-visible {
+    outline: 2px solid #0F9D58;
+    outline-offset: 2px;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #1F2937;
+    font-weight: 600;
+  }
+  
+  p, span {
+    color: #1F2937;
+  }
+  
+  .text-muted {
+    color: #6B7280;
+  }
+}
+
+/* =====================================================
+   COMPONENT STYLES
+   ===================================================== */
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-xl font-bold 
+           hover:bg-primary-light active:bg-primary-dark
+           transition-colors duration-200
+           disabled:bg-gray-400 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white px-6 py-3 rounded-xl font-bold
+           hover:bg-secondary-light active:opacity-90
+           transition-colors duration-200;
+  }
+
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #0F9D58 0%, #0D8A4D 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(15, 157, 88, 0.2);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #0D8A4D 0%, #0B7742 100%);
+    box-shadow: 0 4px 8px rgba(15, 157, 88, 0.3);
+    transform: translateY(-1px);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(15, 157, 88, 0.2);
+  }
+  
+  .btn-secondary {
+    background: #1A73E8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-secondary:hover {
+    background: #1557B0;
+    box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary:active {
+    transform: translateY(0);
+  }
+  
+  input, textarea {
+    background: #F3F4F6;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #1F2937;
+    transition: all 0.2s ease;
+  }
+  
+  input:focus, textarea:focus {
+    outline: none;
+    background: white;
+    border-color: #0F9D58;
+    box-shadow: 0 0 0 3px rgba(15, 157, 88, 0.1);
+  }
+  
+  input::placeholder, textarea::placeholder {
+    color: #6B7280;
+  }
+
+  .route-chip {
+    @apply flex items-center gap-2 px-4 py-2 rounded-full 
+           border-2 cursor-pointer transition-all duration-200
+           hover:shadow-md;
+  }
+
+  .eta-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 
+           rounded-full text-white text-sm font-bold;
+  }
+
+  .spinner {
+    @apply w-8 h-8 border-4 border-primary/30 border-t-primary 
+           rounded-full animate-spin;
+  }
+}
+
+/* =====================================================
+   LAYOUT STYLES
+   ===================================================== */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header {
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+.main {
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.map-section {
+  background: #ddd;
+  position: relative;
+  min-width: 0;
+  height: 100%;
+}
+
+.side-panel {
+  background: white;
+  padding: 16px;
+  border-left: 1px solid #eee;
+  height: 100%;
+}
+
+/* Responsive: Side panel as drawer on mobile */
+@media (max-width: 768px) {
+  .main .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main .col-span-8 {
+    grid-column: span 12;
+  }
+
+  .main .col-span-4 {
+    position: fixed;
+    right: 0;
+    top: 60px;
+    bottom: 0;
+    width: 100%;
+    max-width: 360px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 40;
+    grid-column: span 12;
+  }
+
+  .main .col-span-4.open {
+    transform: translateX(0);
+  }
+}
+
+/* =====================================================
+   UTILITY STYLES
+   ===================================================== */
+
+@layer utilities {
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pb-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .high-contrast {
+    filter: contrast(1.2);
+  }
+
+  .rtl {
+    direction: rtl;
+  }
+
+  .ltr {
+    direction: ltr;
+  }
+}
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* =====================================================
+   GOOGLE MAPS CUSTOM STYLES
+   ===================================================== */
+
+.gm-style-cc,
+.gm-style-mtc {
+  display: none !important;
+}
+
+.custom-marker {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.custom-marker:hover {
+  transform: scale(1.1);
+}
+
+.gm-style-iw {
+  padding: 0 !important;
+}
+
+.gm-style-iw-c {
+  padding: 0 !important;
+  border-radius: 16px !important;
+}
+
+/* =====================================================
+   MAPBOX CUSTOM STYLES
+   ===================================================== */
+
+/* Ensure mapbox container has proper dimensions */
+.mapboxgl-map {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Mapbox controls styling */
+.mapboxgl-ctrl-group {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+}
+
+.mapboxgl-ctrl button {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* Mapbox popup styling */
+.mapboxgl-popup-content {
+  border-radius: 12px !important;
+  padding: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.mapboxgl-popup-close-button {
+  font-size: 20px !important;
+  padding: 4px 8px !important;
+}

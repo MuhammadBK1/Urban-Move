@@ -1,0 +1,58 @@
+{
+  "metroBus": {
+    "name": "Metro Bus (BRT)",
+    "nameUrdu": "میٹرو بس",
+    "color": "#E53935",
+    "icon": "🚌",
+    "stations": [
+      { "id": "mb-1", "name": "Gajjumata", "nameUrdu": "گجومتہ", "lat": 31.4181, "lng": 74.2164 },
+      { "id": "mb-2", "name": "Ittefaq Hospital", "nameUrdu": "اتفاق ہسپتال", "lat": 31.4334, "lng": 74.2343 },
+      { "id": "mb-3", "name": "Chungi Amar Sadhu", "nameUrdu": "چونگی امر سادھو", "lat": 31.4452, "lng": 74.2476 },
+      { "id": "mb-4", "name": "Cantt Station", "nameUrdu": "کینٹ اسٹیشن", "lat": 31.4558, "lng": 74.2564 },
+      { "id": "mb-5", "name": "Ghazi Chowk", "nameUrdu": "غازی چوک", "lat": 31.4679, "lng": 74.2698 },
+      { "id": "mb-6", "name": "Model Town", "nameUrdu": "ماڈل ٹاؤن", "lat": 31.4835, "lng": 74.3253 },
+      { "id": "mb-7", "name": "Kalma Chowk", "nameUrdu": "کلمہ چوک", "lat": 31.5044, "lng": 74.3388 },
+      { "id": "mb-8", "name": "MAO College", "nameUrdu": "ایم اے او کالج", "lat": 31.5128, "lng": 74.3447 },
+      { "id": "mb-9", "name": "Qartaba Chowk", "nameUrdu": "قرطبہ چوک", "lat": 31.5207, "lng": 74.3498 },
+      { "id": "mb-10", "name": "Panorama Center", "nameUrdu": "پینوراما سینٹر", "lat": 31.5285, "lng": 74.3542 },
+      { "id": "mb-11", "name": "GPO", "nameUrdu": "جی پی او", "lat": 31.5494, "lng": 74.3227 },
+      { "id": "mb-12", "name": "Lakshmi Chowk", "nameUrdu": "لکشمی چوک", "lat": 31.5573, "lng": 74.3194 },
+      { "id": "mb-13", "name": "Railway Station", "nameUrdu": "ریلوے اسٹیشن", "lat": 31.5668, "lng": 74.3127 },
+      { "id": "mb-14", "name": "Niazi Chowk", "nameUrdu": "نیازی چوک", "lat": 31.5745, "lng": 74.3086 },
+      { "id": "mb-15", "name": "Azadi Chowk", "nameUrdu": "آزادی چوک", "lat": 31.5823, "lng": 74.3024 },
+      { "id": "mb-16", "name": "Bhatti Chowk", "nameUrdu": "بھٹی چوک", "lat": 31.5892, "lng": 74.2967 },
+      { "id": "mb-17", "name": "Baghbanpura", "nameUrdu": "باغبانپورہ", "lat": 31.5958, "lng": 74.2912 },
+      { "id": "mb-18", "name": "Shalimar Garden", "nameUrdu": "شالیمار باغ", "lat": 31.5997, "lng": 74.2875 },
+      { "id": "mb-19", "name": "Shahdara", "nameUrdu": "شاہدرہ", "lat": 31.6044, "lng": 74.2787 }
+    ]
+  },
+  "orangeLine": {
+    "name": "Orange Line Metro",
+    "nameUrdu": "اورنج لائن میٹرو",
+    "color": "#FF6F00",
+    "icon": "🚇",
+    "stations": [
+      { "id": "ol-1", "name": "Dera Gujran", "nameUrdu": "ڈیرہ گجراں", "lat": 31.6151, "lng": 74.2542 },
+      { "id": "ol-2", "name": "Ali Town", "nameUrdu": "علی ٹاؤن", "lat": 31.5924, "lng": 74.2634 },
+      { "id": "ol-3", "name": "Mahmood Booti", "nameUrdu": "محمود بوٹی", "lat": 31.5823, "lng": 74.2712 },
+      { "id": "ol-4", "name": "Salamatpura", "nameUrdu": "سلامت پورہ", "lat": 31.5745, "lng": 74.2798 },
+      { "id": "ol-5", "name": "Pakistan Mint", "nameUrdu": "پاکستان منٹ", "lat": 31.5658, "lng": 74.2886 },
+      { "id": "ol-6", "name": "Laxmi Chowk", "nameUrdu": "لکشمی چوک", "lat": 31.5573, "lng": 74.2978 },
+      { "id": "ol-7", "name": "GPO Chowk", "nameUrdu": "جی پی او چوک", "lat": 31.5494, "lng": 74.3064 },
+      { "id": "ol-8", "name": "Lake Road", "nameUrdu": "جھیل روڈ", "lat": 31.5402, "lng": 74.3158 },
+      { "id": "ol-9", "name": "Anarkali", "nameUrdu": "انارکلی", "lat": 31.5324, "lng": 74.3245 },
+      { "id": "ol-10", "name": "Punjab Secretariat", "nameUrdu": "پنجاب سیکرٹریٹ", "lat": 31.5256, "lng": 74.3312 },
+      { "id": "ol-11", "name": "Gulberg", "nameUrdu": "گلبرگ", "lat": 31.5146, "lng": 74.3507 },
+      { "id": "ol-12", "name": "Naseerabad", "nameUrdu": "نصیر آباد", "lat": 31.5024, "lng": 74.3624 },
+      { "id": "ol-13", "name": "Ichra", "nameUrdu": "اچھرا", "lat": 31.4923, "lng": 74.3534 },
+      { "id": "ol-14", "name": "Canal View", "nameUrdu": "کینال ویو", "lat": 31.4845, "lng": 74.3445 },
+      { "id": "ol-15", "name": "Thokar Niaz Baig", "nameUrdu": "ٹھوکر نیاز بیگ", "lat": 31.4765, "lng": 74.3356 },
+      { "id": "ol-16", "name": "Sabzazar", "nameUrdu": "سبزہ زار", "lat": 31.4689, "lng": 74.3267 },
+      { "id": "ol-17", "name": "Shalimar", "nameUrdu": "شالیمار", "lat": 31.4612, "lng": 74.3178 },
+      { "id": "ol-18", "name": "Samanabad", "nameUrdu": "سمن آباد", "lat": 31.4534, "lng": 74.3089 },
+      { "id": "ol-19", "name": "Chauburji", "nameUrdu": "چوبرجی", "lat": 31.5298, "lng": 74.3456 },
+      { "id": "ol-20", "name": "Ali Town Terminal", "nameUrdu": "علی ٹاؤن ٹرمینل", "lat": 31.4423, "lng": 74.2867 }
+    ]
+  }
+}
+
